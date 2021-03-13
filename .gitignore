@@ -131,3 +131,5 @@ dmypy.json
 # Virtual environnemnt to ignore
 /capi-env
 
+# .idea/
+.idea/

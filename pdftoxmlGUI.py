@@ -4,6 +4,8 @@ import psutil
 import pyautogui
 import re
 import pyperclip
+import sys
+from FilterFileExtract import get_last_or_second_last_modify_file
 
 
 def extract_files(path, extension):
@@ -16,13 +18,53 @@ def extract_files(path, extension):
                 if file.endswith(extension):
                     full_path = os.path.join(r, file)
                     xml_Files.append(full_path)
+
         return xml_Files
     except:
         print("Somethings went wrong while extracting file")
 
 
 # Need full path to be sure
-path = "C:\\Users\\Asus\\Desktop\\CaPI immobilier\\CaPIimmobilier\\données\\01-03-2021\\Complet avec revenu"
+def main():
+    path = sys.argv[1]
+    print(path)
+    # À ajouter une vérification
+
+    pdfFiles = extract_files(path, ".pdf")
+    pdfFiles = get_last_or_second_last_modify_file(pdfFiles)
+    # ajouter la condition si le file est déjà là en xml
+    path_to_save = ""
+    print('There are ' + str(len(pdfFiles)) + ' files to transfert')
+    numberFile = 0
+    for pdfFile in pdfFiles:
+        print("You are processing the " + str(numberFile) + "/" + str(len(pdfFiles)))
+        file_xml = pdfFile.replace(".pdf", "_données.xml")
+        if not os.path.exists(file_xml):
+            try:
+                path_temp = re.search("(.*)\\\\", pdfFile, re.IGNORECASE).group(1)
+                proc = subprocess.Popen(pdfFile, shell=True)
+                waiting_open_pdf()
+                path_to_save = automatic_key(path_to_save, path_temp)
+                time.sleep(1)
+                kill(proc.pid)
+                time.sleep(1)
+            except subprocess.TimeoutExpired:
+                kill(proc.pid)
+            finally:
+                if os.path.exists(file_xml):
+                    print(file_xml + " was successfully exported")
+                else:
+                    print(file_xml + "had a problem and was not exported in xml")
+        else:
+            print("The following file already exists " + file_xml)
+        numberFile = numberFile + 1
+
+
+if __name__ == "__main__":
+    main()
+
+path = ""
+# path = "C:\\Users\\Asus\\Desktop\\CaPI immobilier\\CaPIimmobilier\\données\\01-03-2021\\Complet avec revenu"
 # Pour extraire les xfas
 # path = "C:\\Users\\Asus\\Desktop\\CaPIimmobilier\\données\\06-04-2021"
 
@@ -54,44 +96,15 @@ def automatic_key(path_to_save, path_temp):
 
 
 def waiting_open_pdf():
-    while pyautogui.locateOnScreen("./convertirbutton1.PNG", confidence=0.8) is None:
-        print(pyautogui.locateOnScreen("./convertirbutton1.PNG", confidence=0.8))
-        box = pyautogui.locateOnScreen("./okbutton.PNG", confidence=0.8)
+    while pyautogui.locateOnScreen(".\\ComparePicture\\readybutton.PNG", confidence=0.8) is None:
+        # print(pyautogui.locateOnScreen(".\\ComparePicture\\readybutton.PNG", confidence=0.8))
+        box = pyautogui.locateOnScreen(".\\ComparePicture\\okbutton.PNG", confidence=0.8)
         if box != None:
-            x, y = pyautogui.locateCenterOnScreen('./okbutton.PNG')
+            x, y = pyautogui.locateCenterOnScreen('.\\ComparePicture\\okbutton.PNG')
             pyautogui.click(x, y)
             pyautogui.moveTo(5, 5)
 
 
 # def verfication_task():
 # def verfication_task():
-# À ajouter une vérification
 
-
-pdfFiles = extract_files(path, ".pdf")
-# ajouter la condition si le file est déjà là en xml
-path_to_save = ""
-print('There are ' + str(len(pdfFiles)) + ' files to transfert')
-numberFile = 0
-for pdfFile in pdfFiles:
-    print("You are processing the "+ str(numberFile) +"/"+str(len(pdfFiles)))
-    file_xml = pdfFile.replace(".pdf", "_données.xml")
-    if not os.path.exists(file_xml):
-        try:
-            path_temp = re.search("(.*)\\\\", pdfFile, re.IGNORECASE).group(1)
-            proc = subprocess.Popen(pdfFile, shell=True)
-            waiting_open_pdf()
-            path_to_save = automatic_key(path_to_save, path_temp)
-            time.sleep(1)
-            kill(proc.pid)
-            time.sleep(1)
-        except subprocess.TimeoutExpired:
-            kill(proc.pid)
-        finally:
-            if os.path.exists(file_xml):
-                print(file_xml + " was successfully exported")
-            else:
-                print(file_xml + "had a problem and was not exported in xml")
-    else:
-        print("The following file already exists " + file_xml)
-    numberFile = numberFile + 1

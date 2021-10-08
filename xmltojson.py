@@ -7,23 +7,8 @@ import re
 import pandas as pd
 import base64
 import sys
-#file to study to extract picture
-# ".\xml_data\2020\NAS\NAS20-00100 à NAS20-00199\NAS20-00175  4 rue Légaré Saint-Eustache"
 
 
-# def extract_xml_files(directory):
-#     try:
-#         xml_Files = []
-#         for path in os.listdir(directory):
-#             if ".xml" in path:
-#                 full_path = os.path.join(directory, path)
-#                 if os.path.isfile(full_path):
-#                     xml_Files.append(full_path)
-#         return xml_Files
-#     except:
-#         print("Somethings went wrong while extracting file")
-
-#Global variable
 PATH_FOLDER_EXTRACT = ".\\csv_data"
 
 def create_folder(path):
@@ -168,8 +153,8 @@ def extract_picture_to_png(xml, directory_path, path_xml_file, folder_to_save):
                 fh.write(base64.b64decode(picture))
             if os.path.exists(picture_name):
                 xml_temp = xml.replace(picture, picture_name)
+                xml = xml_temp
             number_picture = number_picture + 1
-            xml = xml_temp
     return xml
 
 
@@ -181,30 +166,34 @@ def create_image_image_name( xml_path_file, end_balise, folder_to_save):
     name_xml_file = folder_to_save + "\\" + name_xml_file
     return name_xml_file
 
-#
-# def create_folder_done_file():
-#     if not os.path.exists('.\\done_file'):
-#         os.makedirs('.\\done_file')
+
+def extract_parent_parent_directorys(xml_paths):
+    parent_parent_directory_array =[]
+    for xml_path in xml_paths:
+        parent_directory, directory_name = os.path.split(xml_path)
+        parent_parent_directory, parent_directory_name = os.path.split(parent_directory)
+        parent_parent_parent_directory, parent_parent_directory_folder = os.path.split(parent_parent_directory)
+        if not parent_parent_directory_folder in parent_parent_directory_array:
+            parent_parent_directory_array.append(parent_parent_directory_folder)
+    return parent_parent_directory_array
 
 try:
-    # d
     directory = sys.argv[1]
-    for integer in range(1, 22):
-        if integer < 10:
-            directory = "C:\\Users\\dpare\\Documents\\pdfExtractCapi\\xml_data\\2020\\NAS\\NAS20-00"+str(integer)+"00 à NAS20-00"+str(integer)+"99"
-        else:
-            directory = "C:\\Users\\dpare\\Documents\\pdfExtractCapi\\xml_data\\2020\\NAS\\NAS20-0" + str(
-                integer) + "00 à NAS20-0" + str(integer) + "99"
-        # directory = "..\\CaPI immobilier\\CaPIimmobilier\\données\\25-02-2021"
-        print(directory)
-        xml_files_path = extract_files(directory, ".xml")
-        # La possibilité que si je donne un file
-        if not xml_files_path and ".xml" in directory:
-            xml_files_path = [directory]
+    xml_files_path = extract_files(directory, ".xml")
+    folders = extract_parent_parent_directorys( xml_files_path)
 
-        print(len(xml_files_path))
-        jsonFiles, file_versions = xml_files_to_json(xml_files_path, directory)
-        json_to_csv(jsonFiles, directory, file_versions)
+
+    for folder in  folders:
+        xml_files_path_to_analyse = [path for path in xml_files_path if folder in path]
+
+        print(len(xml_files_path_to_analyse))
+        directory_extract = None
+        if folder in directory:
+            directory_extract = directory
+        else:
+            directory_extract = directory + "\\" + folder
+        jsonFiles, file_versions = xml_files_to_json(xml_files_path_to_analyse, directory_extract)
+        json_to_csv(jsonFiles, directory_extract, file_versions)
 except Exception as error:
     print(error)
     print('You must add an path in the command line')
@@ -212,6 +201,7 @@ except Exception as error:
 
 
 
-# def move_done_file():
+#def move_done_file():
+
 
 

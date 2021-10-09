@@ -1,5 +1,5 @@
 # pdfExtractCapi
-Ce projet permet d'extraire les NAS en CSV. C'est seulement ceux qui ont l'option d'exporter en xml qui seront extraits.
+Ce projet permet d'extraire les NAS et les transformer en CSV. C'est seulement ceux qui ont l'option d'exporter en xml qui seront extraits. Il y a 2 parties à l'algorithme.
 
 # Préconditions de l'algorithme:
 Les dossiers doivent avoir cet arborescence:
@@ -10,28 +10,29 @@ NAS
                         |_ 
                            "NAS-Adresse- Nombre"
                                                 |_ 
-                                                  adresse.pdf
+                                                  numéro_NAS.pdf
 ```
 
 # Pour partir l'algorithme
 
 ## 1. PDF À CSV
-Cet algorithme utilise la librairie pyautogui afin d'ouvrir et automatise l'extraction en xml pour les fichiers dont 
-   l'option extraction est requis. Si vous roulez le code à partir de pycharm, il faut laisser l'écran ouvert
-   et ne pas mettre en veille, car sinon le script s'arrête. Le code se retrouve en général dans le fichier pdftoxmlGUI
+Cet algorithme utilise la librairie pyautogui afin d'ouvrir le pdf et automatiser l'extraction en xml. Si vous roulez le code à partir de pycharm, il faut laisser l'écran ouvert
+   et ne pas mettre en veille, car sinon le script s'arrête.
    
-Pour utiliser le script, télécharger pycharm, il va se charger de télécharger le .venv et après rouler run_bash_file avec windows sceduler.
-Avant de partir l'algorithme, il faut modifier la 4e ligne de run_bash_file et elle doit la forme ci-dessous.
+Pour utiliser le script, télécharger pycharm community.  Il va télécharger le .venv et après rouler run_bash_file avec windows sceduler.
+Avant de partir l'algorithme, il faut modifier la 4e ligne de run_bash_file selon votre besoin et elle doit la forme ci-dessous.
 ```
 python "path_du_vers_fichier_pdftoxmlGUI" "path_des_fichiers_à_extraire" "année_à_extraire"
+
+ex. python .\pdftoxmlGUI "\\Srv608\ladossi2019\NAS" 2019
 ```
 
 Vous avez 3 possibilités de chemin pour remplacer "path_des_fichiers_à_extraire":
-- Le chemin vers NAS:
+- Le chemin vers NAS
 > ex. "\\Srv608\ladossi2019\NAS"
-- Le chemin vers une centaine de NAS:
+- Le chemin vers une centaine de NAS
 >  ex. "\\Srv608\ladossi2019\NAS\NAS19-00001 à NAS19-00099"
-- Vers un pdf: 
+- Vers un pdf
 >  ex. "\\Srv608\ladossi2019\NAS\NAS19-00001 à NAS19-00099\NAS19-00005  4610 CH LAPORTE Saint-Côme\8091024.pdf"
 
 
@@ -57,7 +58,7 @@ Cela créera le fichier csv_data. Les csv sont créés en batch de 100 et vous p
 ## 3. Le dossier Log
 Deux fichiers se retrouvent dans ce dossier vous donnent de l'information supplémentaire pour débugger.
 ### - *pdf_that_are_not_extract.csv*
-Ce fichier dit quels fichiers ne sont pas extraits et certaines raisons.
+Ce fichier dit quels fichiers ne sont pas extraits.
 
 ### - *folder_empty.csv*
 Ce ficher dit quel dossier est vide. Cela vous aidera à chercher les fichiers que l'algorithme ne cherche pas et les extraires un par un.  

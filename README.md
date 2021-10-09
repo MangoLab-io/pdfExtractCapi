@@ -1,5 +1,6 @@
 # pdfExtractCapi
-Ce projet permet d'extraire les NAS et les transformer en CSV. C'est seulement ceux qui ont l'option d'exporter en xml qui seront extraits. Il y a 2 parties à l'algorithme.
+Ce projet permet d'extraire les NAS et les transformer en CSV. C'est seulement ceux qui ont l'option d'exporter en xml qui seront extraits. 
+Il y a 2 parties à l'algorithme: PDF à XML et XML à CSV.
 
 # Préconditions de l'algorithme:
 Les dossiers doivent avoir cet arborescence:
@@ -15,7 +16,7 @@ NAS
 
 # Pour partir l'algorithme
 
-## 1. PDF À CSV
+## 1. PDF À XML
 Cet algorithme utilise la librairie pyautogui afin d'ouvrir le pdf et automatiser l'extraction en xml. Si vous roulez le code à partir de pycharm, il faut laisser l'écran ouvert
    et ne pas mettre en veille, car sinon le script s'arrête.
    
@@ -56,7 +57,7 @@ Vous avez 2 moyens pour transformer les xml.
 Cela créera le fichier csv_data. Les csv sont créés en batch de 100 et vous pouvez trouver les photos reliés au pdf.
 
 ## 3. Le dossier Log
-Deux fichiers se retrouvent dans ce dossier vous donnent de l'information supplémentaire pour débugger.
+Deux fichiers se retrouvent dans ce dossier vous donnent de l'information supplémentaire.
 ### - *pdf_that_are_not_extract.csv*
 Ce fichier dit quels fichiers ne sont pas extraits.
 

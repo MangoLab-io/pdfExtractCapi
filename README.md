@@ -56,7 +56,7 @@ Vous avez 2 moyens pour transformer les xml.
       
 Cela créera le fichier csv_data. Les csv sont créés en batch de 100 et vous pouvez trouver les photos reliés au pdf.
 
-## 3. Le dossier Log
+# Le dossier Log
 Deux fichiers se retrouvent dans ce dossier vous donnent de l'information supplémentaire.
 ### - *pdf_that_are_not_extract.csv*
 Ce fichier dit quels fichiers ne sont pas extraits.

@@ -20,7 +20,7 @@ NAS
 Cet algorithme utilise la librairie pyautogui afin d'ouvrir le pdf et automatiser l'extraction en xml. Si vous roulez le code à partir de pycharm, il faut laisser l'écran ouvert
    et ne pas mettre en veille, car sinon le script s'arrête.
    
-Pour utiliser le script, télécharger pycharm community.  Il va télécharger le .venv et après rouler run_bash_file avec windows sceduler.
+Pour utiliser le script, télécharger pycharm community(https://www.jetbrains.com/fr-fr/pycharm/download/#section=windows).  Il va télécharger le .venv et après rouler run_bash_file avec windows sceduler.
 Avant de partir l'algorithme, il faut modifier la 4e ligne de run_bash_file selon votre besoin et elle doit la forme ci-dessous.
 ```
 python "path_du_vers_fichier_pdftoxmlGUI" "path_des_fichiers_à_extraire" "année_à_extraire"
